@@ -112,13 +112,13 @@ For scanner signaling, the fields are interpreted as follows:
 ## **2.1 Signaling Scanner Presence**
 
 To signal the presence of a CDS scanner that checks for CDS records
-every 60 minutes, a parent zone would publish the following DSYNC
+once every 24 hours, a parent zone would publish the following DSYNC
 record:
 
-parent.example. IN DSYNC CDS NOTIFY 60 .
+parent.example. IN DSYNC CDS NOTIFY 1440 .
 
 The presence of this record informs the child operator that the parent
-zone operates a scanner for CDS records with a 60-minute interval.
+zone operates a scanner for CDS records with a 1440-minute (= 24h) interval.
 
 ## **2.2 Signaling Absence of a Scanner**
 
@@ -127,8 +127,8 @@ set the port field to 0:
 
 parent.example. IN DSYNC CDS NOTIFY 0 .
 
-This record indicates that the parent zone does not operate a scanner
-for CDS records.
+The precence of this record indicate that the parent zone does not
+operate a scanner for CDS records.
 
 # **3. Operational Considerations**
 
