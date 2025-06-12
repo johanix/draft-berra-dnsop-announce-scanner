@@ -1,72 +1,164 @@
-Abstract
+---
+title: "Announce Existence of Parent CDS/CSYNC Scanner"
+abbrev: "Announce Parent DNS Scanner"
+docname: draft-berra-dnsop-announce-scanner-00
+date: {DATE}
+category: std
 
-In DNS operations, automated scanners are commonly employed to detect the presence of specific records, such as CDS or CSYNC, indicating a desire for delegation updates. However, the presence and periodicity of these scanners are typically implicit and undocumented, leading to inefficiencies and uncertainties. ￼
+ipr: trust200902
+area: Internet
+workgroup: DNSOP Working Group
+keyword: Internet-Draft
 
-This document proposes an extension to the DSYNC resource record, as defined in [draft-ietf-dnsop-generalized-notify], allowing parent zones to explicitly signal the presence and scanning interval of such automated scanners. This enhancement aims to improve transparency and coordination between child and parent zones. ￼
+stand_alone: yes
+pi: [toc, sortrefs, symrefs]
 
-Status of This Memo
+author:
+ -
+  ins: E. Bergström
+  name: Erik Bergström
+  organization: The Swedish Internet Foundation
+  country: Sweden
+  email: erik.bergstrom@internetstiftelsen.se
+ -
+  ins: J. Stenstam
+  name: Johan Stenstam
+  organization: The Swedish Internet Foundation
+  country: Sweden
+  email: johan.stenstam@internetstiftelsen.se
+ -
+  ins: L. Fernandez
+  name: Leon Fernandez
+  organization: The Swedish Internet Foundation
+  country: Sweden
+  email: leon.fernandez@internetstiftelsen.se
 
-This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.
+normative:
 
-Internet-Drafts are working documents of the Internet Engineering Task Force (IETF). Note that other groups may also distribute working documents as Internet-Drafts. The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.
+informative:
 
-This Internet-Draft will expire on 4 December 2025. ￼
+--- abstract
 
-1. Introduction
+In DNS operations, automated scanners are commonly employed by the
+operator of a parent zone to detect the presence of specific records,
+such as CDS or CSYNC, in child zones, indicating a desire for
+delegation updates. However, the presence and periodicity of these
+scanners are typically implicit and undocumented, leading to
+inefficiencies and uncertainties. ￼
 
-Automated scanners play a vital role in DNS operations by monitoring zones for specific records that signal desired updates to delegation information. For instance, the presence of CDS records in a child zone indicates a request to update DS records in the parent zone. However, the operation of these scanners is often opaque, with no standardized method for child zones to signal their presence or scanning frequency. ￼
+This document proposes an extension to the semantics of the DSYNC
+resource record, as defined in
+{{?I-D.draft-ietf-dnsop-generalized-notify}}, allowing parent zones to
+explicitly signal the presence and scanning interval of such automated
+scanners. This enhancement aims to improve transparency and
+coordination between child and parent zones.
 
-The lack of explicit signaling can lead to inefficiencies, such as unnecessary scanning or delayed updates due to misaligned expectations between child and parent zones. To address this, we propose an extension to the DSYNC resource record, enabling child zones to explicitly communicate the presence and scanning interval of their automated scanners.
+TO BE REMOVED: This document is being collaborated on in Github at:
+[https://github.com/johanix/draft-berra-dnsop-announce-scanner](https://github.com/johanix/draft-berra-dnsop-announce-scanner).
+The most recent working version of the document, open issues, etc, should all be
+available there.  The authors (gratefully) accept pull requests.
 
-2. DSYNC Record Extension for Scanner Signaling
+--- middle
 
-The DSYNC resource record, as defined in [draft-ietf-dnsop-generalized-notify], facilitates the discovery of endpoints for generalized NOTIFY messages. We propose an extension to this record to signal scanner presence and periodicity.
+# **1. Introduction**
 
-The DSYNC record has the following format: ￼
+Automated scanners play a vital role in DNS operations by monitoring
+zones for specific records that signal desired updates to delegation
+information. For instance, the presence of CDS records in a child zone
+indicates a request to update DS records in the parent zone. However,
+the operation of these scanners is often opaque, with no standardized
+method for parent zones to signal their presence or scanning
+frequency. ￼
 
-{owner} IN DSYNC {RRtype} {scheme} {port} {target}
+The lack of explicit signaling can lead to inefficiencies, such as
+unnecessary scanning or delayed updates due to misaligned expectations
+between child and parent zones. To address this, this document
+proposes an extension to the semantics of the DSYNC resource record,
+enabling parent zones to explicitly announce the presence and scanning
+interval of their automated scanners.
+
+As the DSYNC record becomes standard automated child-side systems
+looking up the parent DSYNC records are expected. Given that a vast
+majority of parent zones do not operate scanners providing a simple
+mechaism to inform the child of this fact will be useful.
+
+# **2. DSYNC Record Extension for Scanner Signaling**
+
+The DSYNC resource record, as defined in
+{{?I-D.draft-ietf-dnsop-generalized-notify}}, facilitates the
+discovery of endpoints for generalized NOTIFY messages. This document
+proposes an extension to the semantics this record to signal scanner
+presence (or absence) and periodicity.
+
+The DSYNC record has the following format:
+
+{owner} IN DSYNC {RRtype} {Scheme} {Port} {Target}
 
 For scanner signaling, the fields are interpreted as follows:
-	•	owner: The domain name of the child zone.
-	•	RRtype: The type of record the scanner is monitoring (e.g., CDS, CSYNC). ￼
-	•	scheme: Set to 1, indicating a NOTIFY message.
-	•	port: Overloaded to represent the scanning interval in minutes. ￼
-	•	target: Set to “.”, indicating that this record is for scanner signaling purposes.
 
-2.1 Signaling Scanner Presence
+  * owner: The name of the parent zone.
 
-To signal the presence of a scanner that checks for CDS records every 60 minutes, a child zone would publish the following DSYNC record: ￼
+  * RRtype: The type of record the scanner is monitoring (e.g., CDS,
+       CSYNC).
 
-example.com. IN DSYNC CDS 1 60 .
+  * Scheme: Set to NOTIFY (on the wire this is represented as a uint8
+       = 1).
 
-This record informs the parent zone that the child zone operates a scanner for CDS records with a 60-minute interval. ￼
+  * Port: Overloaded to represent the scanning interval in minutes.
 
+  * Target: Set to “.”, indicating that this record is for scanner
+       signaling purposes.
 
-2.2 Signaling Absence of a Scanner
+## **2.1 Signaling Scanner Presence**
 
-To explicitly signal the absence of a scanner, the child zone would set the port field to 0:
-example.com. IN DSYNC CDS 1 0 .
+To signal the presence of a CDS scanner that checks for CDS records
+every 60 minutes, a parent zone would publish the following DSYNC
+record:
 
-This record indicates that the child zone does not operate a scanner for CDS records.
+parent.example. IN DSYNC CDS NOTIFY 60 .
 
-3. Operational Considerations
+The presence of this record informs the child operator that the parent
+zone operates a scanner for CDS records with a 60-minute interval.
 
-Implementing this extension requires coordination between child and parent zones. Child zones should ensure that the DSYNC records accurately reflect their scanner operations. Parent zones may use this information to adjust their expectations and processes accordingly.
+## **2.2 Signaling Absence of a Scanner**
 
-It’s important to note that overloading the port field for scanner interval signaling deviates from its original purpose. Implementers should handle this overloading with care to avoid conflicts with existing uses of the port field.
+To explicitly signal the absence of a scanner, the parent zone would
+set the port field to 0:
 
-4. Security Considerations
+parent.example. IN DSYNC CDS NOTIFY 0 .
 
-The proposed extension does not introduce new security vulnerabilities. However, as with any DNS record, authenticity and integrity should be ensured through DNSSEC signing. Parent zones should validate the DSYNC records using DNSSEC to prevent spoofing or tampering.
+This record indicates that the parent zone does not operate a scanner
+for CDS records.
 
-5. IANA Considerations
+# **3. Operational Considerations**
 
-This document does not require any IANA actions. ￼
+Publishing DSYNC records (typically for both CDS and CSYNC records)
+requires no coordination between parent and child zones. The parent
+zone operator should ensure that the DSYNC records accurately reflect
+their scanner operations (or absence of a scanner). Child zone
+operators may use this information to adjust their expectations and
+processes accordingly.
 
-6. References
+It’s important to note that overloading the port field for scanner
+interval signaling deviates from its original purpose. Hence it is
+important to first verify that the DSYNC Target field is equivalent to
+"." before interpreting the Port field as a signaling mechanism rather
+than a port number.
 
-6.1 Normative References
-	•	[draft-ietf-dnsop-generalized-notify] Generalized DNS Notifications. ￼
+# **4. Security Considerations**
 
-6.2 Informative References
-	•	[draft-johani-dnsop-delegation-mgmt-via-ddns] Automating DNS Delegation Management via DDNS. ￼
+The proposed semantic extension does not introduce new security
+vulnerabilities. However, as with any DNS record, authenticity and
+integrity should be ensured through DNSSEC signing. Child zones
+operators should validate the DSYNC records using DNSSEC before
+trusting them.
+
+# **5. IANA Considerations**
+
+This document does not require any IANA actions.
+
+--- back
+
+# Change History (to be removed before publication)
+
+> Initial public draft
