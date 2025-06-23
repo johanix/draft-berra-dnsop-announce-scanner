@@ -90,9 +90,12 @@ discovery of endpoints for generalized NOTIFY messages. This document
 proposes an extension to the semantics this record to signal scanner
 presence (or absence) and periodicity.
 
-The DSYNC record has the following format:
+The DSYNC record has the following format, as defined in
+{{?I-D.draft-ietf-dnsop-generalized-notify}}:
 
 {owner} IN DSYNC {RRtype} {Scheme} {Port} {Target}
+
+where {owner} follows the discovery methods specified in the DSYNC specification.
 
 For scanner signaling, the fields are interpreted as follows:
 
@@ -106,29 +109,49 @@ For scanner signaling, the fields are interpreted as follows:
 
   * Port: Overloaded to represent the scanning interval in minutes.
 
-  * Target: Set to “.”, indicating that this record is for scanner
+  * Target: Set to ".", indicating that this record is for scanner
        signaling purposes.
 
 ## **2.1 Signaling Scanner Presence**
 
-To signal the presence of a CDS scanner that checks for CDS records
+To signal the presence of a scanner that check for CDS and CSYNC records
 once every 24 hours, a parent zone would publish the following DSYNC
-record:
+records:
 
-parent.example. IN DSYNC CDS NOTIFY 1440 .
+_dsync.parent.example. IN DSYNC CDS NOTIFY 1440 .
+_dsync.parent.example. IN DSYNC CSYNC NOTIFY 1440 .
 
-The presence of this record informs the child operator that the parent
-zone operates a scanner for CDS records with a 1440-minute (= 24h) interval.
+The presence of these records informs the child operator that the parent
+zone operates a scanner for both CDS and CSYNC records with a 1440-minute
+(= 24h) interval.
 
 ## **2.2 Signaling Absence of a Scanner**
 
 To explicitly signal the absence of a scanner, the parent zone would
 set the port field to 0:
 
-parent.example. IN DSYNC CDS NOTIFY 0 .
+_dsync.parent.example. IN DSYNC CDS NOTIFY 0 .
+_dsync.parent.example. IN DSYNC CSYNC NOTIFY 0 .
 
-The precence of this record indicate that the parent zone does not
-operate a scanner for CDS records.
+The presence of these records indicate that the parent zone does not
+operate a scanner for CDS or CSYNC records.
+
+## **2.3 Wildcard and Child-specific Methods**
+
+Parent zones can also use the wildcard and child-specific methods to signal
+the presence or absence of scanners as described in {{?I-D.draft-ietf-dnsop-generalized-notify}}.
+
+For example:
+
+*._dsync.parent.example. IN DSYNC CDS NOTIFY 0 .
+*._dsync.parent.example. IN DSYNC CSYNC NOTIFY 0 .
+
+or
+
+child._dsync.parent.example. IN DSYNC CDS NOTIFY 0 .
+child._dsync.parent.example. IN DSYNC CSYNC NOTIFY 0 .
+
+
 
 # **3. Operational Considerations**
 
@@ -139,7 +162,7 @@ their scanner operations (or absence of a scanner). Child zone
 operators may use this information to adjust their expectations and
 processes accordingly.
 
-It’s important to note that overloading the port field for scanner
+It's important to note that overloading the port field for scanner
 interval signaling deviates from its original purpose. Hence it is
 important to first verify that the DSYNC Target field is equivalent to
 "." before interpreting the Port field as a signaling mechanism rather
