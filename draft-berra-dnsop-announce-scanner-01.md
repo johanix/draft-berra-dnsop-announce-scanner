@@ -1,7 +1,7 @@
 ---
 title: "Announce Existence of Parent CDS/CSYNC Scanner"
 abbrev: "Announce Parent DNS Scanner"
-docname: draft-berra-dnsop-announce-scanner-00
+docname: draft-berra-dnsop-announce-scanner-01
 date: {DATE}
 category: std
 
@@ -60,7 +60,7 @@ available there.  The authors (gratefully) accept pull requests.
 
 --- middle
 
-# **1. Introduction**
+# Introduction
 
 Automated scanners play a vital role in DNS operations by monitoring
 zones for specific records that signal desired updates to delegation
@@ -82,7 +82,7 @@ looking up the parent DSYNC records are expected. Given that a vast
 majority of parent zones do not operate scanners providing a simple
 mechaism to inform the child of this fact will be useful.
 
-# **2. DSYNC Record Extension for Scanner Signaling**
+# DSYNC Record Extension for Scanner Signaling
 
 The DSYNC resource record, as defined in
 {{?I-D.draft-ietf-dnsop-generalized-notify}}, facilitates the
@@ -111,7 +111,7 @@ For scanner signaling, the fields are interpreted as follows:
 
   * Target: Not used, RECOMMENDED to set to ".".
 
-## **2.1 Signaling Scanner Presence**
+## Signaling Scanner Presence
 
 To signal the presence of a scanner that check for CDS and CSYNC records
 once every 24 hours, a parent zone would publish the following DSYNC
@@ -124,7 +124,7 @@ The presence of these records informs the child operator that the parent
 zone operates a scanner for both CDS and CSYNC records with a 1440-minute
 (= 24h) interval.
 
-## **2.2 Signaling Absence of a Scanner**
+## Signaling Absence of a Scanner
 
 To explicitly signal the absence of a scanner, the parent zone would
 set the port field to 0:
@@ -135,7 +135,7 @@ _dsync.parent.example. IN DSYNC CSYNC SCANNER 0 .
 The presence of these records indicate that the parent zone does not
 operate a scanner for CDS or CSYNC records.
 
-## **2.3 Wildcard and Child-specific Methods**
+## Wildcard and Child-specific Methods
 
 Parent zones can also use the wildcard and child-specific methods to signal
 the presence or absence of scanners as described in {{?I-D.draft-ietf-dnsop-generalized-notify}}.
@@ -152,7 +152,7 @@ child._dsync.parent.example. IN DSYNC CSYNC SCANNER 0 .
 
 
 
-# **3. Operational Considerations**
+# Operational Considerations
 
 Publishing DSYNC records (typically for both CDS and CSYNC records)
 requires no coordination between parent and child zones. The parent
@@ -166,7 +166,7 @@ interval signaling deviates from its original purpose. By using a new
 {scheme}, "SCANNER", we hope to minimize the implications of this as
 software implementations SHOULD discard any unsupported schemes.
 
-# **4. Security Considerations**
+# Security Considerations
 
 The proposed scheme does not introduce new security
 vulnerabilities. However, as with any DNS record, authenticity and
@@ -174,7 +174,7 @@ integrity should be ensured through DNSSEC signing. Child zones
 operators should validate the DSYNC records using DNSSEC before
 trusting them.
 
-# **5. IANA Considerations**
+# IANA Considerations
    IANA is requested to assign a new "scheme" value to the registry for
    "DSYNC Location of Synchronization Endpoints" as follows:
 
