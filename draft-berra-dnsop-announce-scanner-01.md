@@ -87,30 +87,29 @@ mechaism to inform the child of this fact will be useful.
 The DSYNC resource record, as defined in
 {{?I-D.draft-ietf-dnsop-generalized-notify}}, facilitates the
 discovery of endpoints for generalized NOTIFY messages. This document
-proposes an extension to the semantics this record to signal scanner
-presence (or absence) and periodicity.
+proposes a new {scheme} for this record that can be used to signal scanner
+presence (or absence) and periodicity. This new scheme=3 is defined as
+"SCANNER".
 
 The DSYNC record has the following format, as defined in
 {{?I-D.draft-ietf-dnsop-generalized-notify}}:
 
 {owner} IN DSYNC {RRtype} {Scheme} {Port} {Target}
 
-where {owner} follows the discovery methods specified in the DSYNC specification.
-
 For scanner signaling, the fields are interpreted as follows:
 
-  * owner: The name of the parent zone.
+  * owner: The name of the parent zone. Follows the discovery methods
+       specified in the DSYNC specification.
 
   * RRtype: The type of record the scanner is monitoring (e.g., CDS,
        CSYNC).
 
-  * Scheme: Set to NOTIFY (on the wire this is represented as a uint8
-       = 1).
+  * Scheme: Set to SCANNER (on the wire this is represented as a uint8
+       = 3).
 
   * Port: Overloaded to represent the scanning interval in minutes.
 
-  * Target: Set to ".", indicating that this record is for scanner
-       signaling purposes.
+  * Target: Not used, RECOMMENDED to set to ".".
 
 ## **2.1 Signaling Scanner Presence**
 
@@ -118,8 +117,8 @@ To signal the presence of a scanner that check for CDS and CSYNC records
 once every 24 hours, a parent zone would publish the following DSYNC
 records:
 
-_dsync.parent.example. IN DSYNC CDS NOTIFY 1440 .
-_dsync.parent.example. IN DSYNC CSYNC NOTIFY 1440 .
+_dsync.parent.example. IN DSYNC CDS SCANNER 1440 .
+_dsync.parent.example. IN DSYNC CSYNC SCANNER 1440 .
 
 The presence of these records informs the child operator that the parent
 zone operates a scanner for both CDS and CSYNC records with a 1440-minute
@@ -130,8 +129,8 @@ zone operates a scanner for both CDS and CSYNC records with a 1440-minute
 To explicitly signal the absence of a scanner, the parent zone would
 set the port field to 0:
 
-_dsync.parent.example. IN DSYNC CDS NOTIFY 0 .
-_dsync.parent.example. IN DSYNC CSYNC NOTIFY 0 .
+_dsync.parent.example. IN DSYNC CDS SCANNER 0 .
+_dsync.parent.example. IN DSYNC CSYNC SCANNER 0 .
 
 The presence of these records indicate that the parent zone does not
 operate a scanner for CDS or CSYNC records.
@@ -143,13 +142,13 @@ the presence or absence of scanners as described in {{?I-D.draft-ietf-dnsop-gene
 
 For example:
 
-*._dsync.parent.example. IN DSYNC CDS NOTIFY 0 .
-*._dsync.parent.example. IN DSYNC CSYNC NOTIFY 0 .
+*._dsync.parent.example. IN DSYNC CDS SCANNER 0 .
+*._dsync.parent.example. IN DSYNC CSYNC SCANNER 0 .
 
 or
 
-child._dsync.parent.example. IN DSYNC CDS NOTIFY 0 .
-child._dsync.parent.example. IN DSYNC CSYNC NOTIFY 0 .
+child._dsync.parent.example. IN DSYNC CDS SCANNER 0 .
+child._dsync.parent.example. IN DSYNC CSYNC SCANNER 0 .
 
 
 
@@ -163,25 +162,35 @@ operators may use this information to adjust their expectations and
 processes accordingly.
 
 It's important to note that overloading the port field for scanner
-interval signaling deviates from its original purpose. Hence it is
-important to first verify that the DSYNC Target field is equivalent to
-"." before interpreting the Port field as a signaling mechanism rather
-than a port number.
+interval signaling deviates from its original purpose. By using a new
+{scheme}, "SCANNER", we hope to minimize the implications of this as
+software implementations SHOULD discard any unsupported schemes.
 
 # **4. Security Considerations**
 
-The proposed semantic extension does not introduce new security
+The proposed scheme does not introduce new security
 vulnerabilities. However, as with any DNS record, authenticity and
 integrity should be ensured through DNSSEC signing. Child zones
 operators should validate the DSYNC records using DNSSEC before
 trusting them.
 
 # **5. IANA Considerations**
+   IANA is requested to assign a new "scheme" value to the registry for
+   "DSYNC Location of Synchronization Endpoints" as follows:
 
-This document does not require any IANA actions.
+   Reference  (this document)
+
+       +========+========+==========+======================+=================+
+       | RRtype | Scheme | Mnemonic | Purpose              | Reference       |
+       +========+========+==========+======================+=================+
+       | CDS    | 3      | SCANNER  | Scanner announcement | (this document) |
+       +--------+--------+----------+----------------------+-----------------+
+       | CSYNC  | 3      | SCANNER  | Scanner announcement | (this document) |
+       +--------+--------+----------+----------------------+-----------------+
 
 --- back
 
 # Change History (to be removed before publication)
 
 > Initial public draft
+> Make sure examples use _dsync label and propose new scheme
