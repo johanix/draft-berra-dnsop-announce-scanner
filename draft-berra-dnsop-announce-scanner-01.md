@@ -137,8 +137,9 @@ operate a scanner for CDS or CSYNC records.
 
 ## Wildcard and Child-specific Methods
 
-Parent zones can also use the wildcard and child-specific methods to signal
-the presence or absence of scanners as described in {{?I-D.draft-ietf-dnsop-generalized-notify}}.
+Parent zones can also use the wildcard and child-specific methods
+to signal the presence or absence of scanners as described in
+{{?I-D.draft-ietf-dnsop-generalized-notify}}.
 
 For example:
 
@@ -162,24 +163,23 @@ operators may use this information to adjust their expectations and
 processes accordingly.
 
 It's important to note that overloading the port field for scanner
-interval signaling deviates from its original purpose. By using a new
-{scheme}, "SCANNER", we hope to minimize the implications of this as
-software implementations SHOULD discard any unsupported schemes.
+interval signaling deviates from its original purpose. Using a new
+{scheme}, "SCANNER", is intended to minimize the implications of this
+as software implementations SHOULD discard any unsupported schemes.
 
 # Security Considerations
 
-The proposed scheme does not introduce new security
-vulnerabilities. However, as with any DNS record, authenticity and
-integrity should be ensured through DNSSEC signing. Child zones
-operators should validate the DSYNC records using DNSSEC before
-trusting them.
+The proposed new DSYNC scheme does not introduce new security
+vulnerabilities. As in {{?I-D.draft-ietf-dnsop-generalized-notify}} use of DNSSEC is RECOMMENDED but not required. Hence, a child service that looks up DSYNC RRsets in the parent zone may choose to ignore unsigned DSYNC RRsets.
 
 # IANA Considerations
-   IANA is requested to assign a new "scheme" value to the registry for
-   "DSYNC Location of Synchronization Endpoints" as follows:
 
-   Reference  (this document)
+IANA is requested to assign a new "scheme" value to the registry for
+"DSYNC Location of Synchronization Endpoints" as follows:
 
+Reference  (this document)
+
+~~~
        +========+========+==========+======================+=================+
        | RRtype | Scheme | Mnemonic | Purpose              | Reference       |
        +========+========+==========+======================+=================+
@@ -187,6 +187,7 @@ trusting them.
        +--------+--------+----------+----------------------+-----------------+
        | CSYNC  | 3      | SCANNER  | Scanner announcement | (this document) |
        +--------+--------+----------+----------------------+-----------------+
+~~~
 
 --- back
 
