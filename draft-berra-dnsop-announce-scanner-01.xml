@@ -165,8 +165,9 @@ operate a scanner for CDS or CSYNC records.</t>
 </section>
 <section anchor="wildcard-and-child-specific-methods"><name>Wildcard and Child-specific Methods</name>
 
-<t>Parent zones can also use the wildcard and child-specific methods to signal
-the presence or absence of scanners as described in <xref target="I-D.draft-ietf-dnsop-generalized-notify"/>.</t>
+<t>Parent zones can also use the wildcard and child-specific methods
+to signal the presence or absence of scanners as described in
+<xref target="I-D.draft-ietf-dnsop-generalized-notify"/>.</t>
 
 <t>For example:</t>
 
@@ -190,34 +191,32 @@ operators may use this information to adjust their expectations and
 processes accordingly.</t>
 
 <t>It's important to note that overloading the port field for scanner
-interval signaling deviates from its original purpose. By using a new
-{scheme}, "SCANNER", we hope to minimize the implications of this as
-software implementations SHOULD discard any unsupported schemes.</t>
+interval signaling deviates from its original purpose. Using a new
+{scheme}, "SCANNER", is intended to minimize the implications of this
+as software implementations SHOULD discard any unsupported schemes.</t>
 
 </section>
 <section anchor="security-considerations"><name>Security Considerations</name>
 
-<t>The proposed scheme does not introduce new security
-vulnerabilities. However, as with any DNS record, authenticity and
-integrity should be ensured through DNSSEC signing. Child zones
-operators should validate the DSYNC records using DNSSEC before
-trusting them.</t>
+<t>The proposed new DSYNC scheme does not introduce new security
+vulnerabilities. As in <xref target="I-D.draft-ietf-dnsop-generalized-notify"/> use of DNSSEC is RECOMMENDED but not required. Hence, a child service that looks up DSYNC RRsets in the parent zone may choose to ignore unsigned DSYNC RRsets.</t>
 
 </section>
 <section anchor="iana-considerations"><name>IANA Considerations</name>
+
 <t>IANA is requested to assign a new "scheme" value to the registry for
-   "DSYNC Location of Synchronization Endpoints" as follows:</t>
+"DSYNC Location of Synchronization Endpoints" as follows:</t>
 
 <t>Reference  (this document)</t>
 
 <figure><artwork><![CDATA[
-   +========+========+==========+======================+=================+
-   | RRtype | Scheme | Mnemonic | Purpose              | Reference       |
-   +========+========+==========+======================+=================+
-   | CDS    | 3      | SCANNER  | Scanner announcement | (this document) |
-   +--------+--------+----------+----------------------+-----------------+
-   | CSYNC  | 3      | SCANNER  | Scanner announcement | (this document) |
-   +--------+--------+----------+----------------------+-----------------+
+       +========+========+==========+======================+=================+
+       | RRtype | Scheme | Mnemonic | Purpose              | Reference       |
+       +========+========+==========+======================+=================+
+       | CDS    | 3      | SCANNER  | Scanner announcement | (this document) |
+       +--------+--------+----------+----------------------+-----------------+
+       | CSYNC  | 3      | SCANNER  | Scanner announcement | (this document) |
+       +--------+--------+----------+----------------------+-----------------+
 ]]></artwork></figure>
 
 </section>
@@ -284,7 +283,7 @@ trusting them.</t>
 
 
 
-<?line 191?>
+<?line 192?>
 
 <section anchor="change-history-to-be-removed-before-publication"><name>Change History (to be removed before publication)</name>
 
@@ -299,65 +298,65 @@ Make sure examples use _dsync label and propose new scheme</t>
   </back>
 
 <!-- ##markdown-source:
-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
-uoxDauSZzmgq/g2Wp87UnxsAAA==
+H4sIAAAAAAAAA81ZXXMbtxV9x6/AyA+VEnKt2H5oOeO2ikjHylgfIyrNZDKZ
+DLgLkoiWCxbAiqYV+Wf1qTN96A/qX+i5F9jlUpRrq05nygd7uVwA9+Pcc89d
+9ft9EUwo9UDuHVWVratcy9Fb44OmKzuVF8rpKsjj4fjp8fiHs2M5zlVVabcn
+1GTi9E13YXp2eDbePFXYvFIL7F84NQ39iXZO9YvK22VfpXV9Hx/uH34lChXw
+7O3w6Gp0J3J8mVm3HkgfCiHM0g1kcLUPzw4P/3D4TOA4NZAnVdCu0kGsrLue
+OVsvB2TC+YX8HjdMNZPf0E1xrdd4otgs6A/JJCF8UFXxsypthaPX2oulGcgf
+g8170lsXnJ56XK0XdPGTEKoOc+sGQvaFlKbyAznK5NfazXxw//zbAjejwyNn
+rrfvWzdTlXmngrHVQF7NtRyvdGH8vDVJvkJECn4Az+f4Esh9ekzTHb1QphxI
+ja2zSdzaLv5s0mofzDTo0usq87pj37eZHCOh8HNj3bd2rqru7d/MuF9o58yn
+nT9q3JtMvsIDSIF+11r3Rttq6/ZvZl2JnbNps/MHrBOVdQtsdaMHgF017Xzr
+9/tSTRB3lQM6JxWj3S6145MBFMDD4mldyARrL4FTGLRY2Kpcw45ladf4ebKW
+Ya5FXGsdFZuSy1hC74BFGawsdNB5oOfk0mnfFKVf6txMTS6dzgFp3xO+zudS
+eapTxEpyqfYQYJnPTVnwfp6+FwZFRTWhsLc3MAzOiUKXesYOyHpJJegz+dqu
+9I12ve3DETUJg43FRiasyRj8jpBtORvWS5xTwlsDb+lJXoj82LxewEFd9JAJ
+VZAlwSLEegp3DI4w2qdnc+2CQn4MWfOvf/xdiKu58bLZAjbZpfX8uNRvCW5k
+P4JGBnukG0tznyyUQ4qIgBu2dvAjBq5HISv0FOcXCI64vf3TSX+YRaoyOkwT
+U800XFOleaeLfmUBlfXdHdaWpV2RB52keXJHv41Ow39vZpUqd2PI4aK1DMAb
+PEJp5SQ2+GlDmkl2XFeoq1yz78os6CQKr7M3CLhTlWcz8jXtL3IL90wVczrR
+YaV1gwVOYcfiDIE9l1+P5OXo9Pwvo+FAbscZ1xNNpua2LNXEOgY3tgW6vjFh
+Xk+kCgPx4zyEpR88fTrjexkA/5SpwLx9+nHu/2n/s5YfZII4YWF9oNSS2atE
+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
+h3ou+NheZakmuowTbOSgztwq/g170Kk7vBsAAA==
 
 -->
 
