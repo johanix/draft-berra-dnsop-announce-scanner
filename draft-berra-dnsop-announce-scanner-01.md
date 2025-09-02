@@ -48,15 +48,16 @@ inefficiencies and uncertainties. ￼
 
 This document proposes an extension to the semantics of the DSYNC
 resource record, as defined in
-{{?I-D.draft-ietf-dnsop-generalized-notify}}, allowing parent zones to
+draft-ietf-dnsop-generalized-notify, allowing parent zones to
 explicitly signal the presence and scanning interval of such automated
 scanners. This enhancement aims to improve transparency and
 coordination between child and parent zones.
 
 TO BE REMOVED: This document is being collaborated on in Github at:
 [https://github.com/johanix/draft-berra-dnsop-announce-scanner](https://github.com/johanix/draft-berra-dnsop-announce-scanner).
-The most recent working version of the document, open issues, etc, should all be
-available there.  The authors (gratefully) accept pull requests.
+The most recent working version of the document, open issues, etc,
+should all be available there.  The authors (gratefully) accept pull
+requests.
 
 --- middle
 
@@ -82,14 +83,20 @@ looking up the parent DSYNC records are expected. Given that a vast
 majority of parent zones do not operate scanners providing a simple
 mechaism to inform the child of this fact will be useful.
 
+# Requirements Terminology
+
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+"SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+document are to be interpreted as described in {{!RFC2119}}.
+
 # DSYNC Record Extension for Scanner Signaling
 
 The DSYNC resource record, as defined in
 {{?I-D.draft-ietf-dnsop-generalized-notify}}, facilitates the
 discovery of endpoints for generalized NOTIFY messages. This document
-proposes a new {scheme} for this record that can be used to signal scanner
-presence (or absence) and periodicity. This new scheme=3 is defined as
-"SCANNER".
+proposes a new {scheme} for this record that can be used to signal
+scanner presence (or absence) and periodicity. This new scheme=3 is
+defined as "SCANNER".
 
 The DSYNC record has the following format, as defined in
 {{?I-D.draft-ietf-dnsop-generalized-notify}}:
@@ -170,7 +177,10 @@ as software implementations SHOULD discard any unsupported schemes.
 # Security Considerations
 
 The proposed new DSYNC scheme does not introduce new security
-vulnerabilities. As in {{?I-D.draft-ietf-dnsop-generalized-notify}} use of DNSSEC is RECOMMENDED but not required. Hence, a child service that looks up DSYNC RRsets in the parent zone may choose to ignore unsigned DSYNC RRsets.
+vulnerabilities. As in {{?I-D.draft-ietf-dnsop-generalized-notify}}
+use of DNSSEC is RECOMMENDED but not required. Hence, a child service
+that looks up DSYNC RRsets in the parent zone may choose to ignore
+unsigned DSYNC RRsets.
 
 # IANA Considerations
 
@@ -180,13 +190,13 @@ IANA is requested to assign a new "scheme" value to the registry for
 Reference  (this document)
 
 ~~~
-       +========+========+==========+======================+=================+
-       | RRtype | Scheme | Mnemonic | Purpose              | Reference       |
-       +========+========+==========+======================+=================+
-       | CDS    | 3      | SCANNER  | Scanner announcement | (this document) |
-       +--------+--------+----------+----------------------+-----------------+
-       | CSYNC  | 3      | SCANNER  | Scanner announcement | (this document) |
-       +--------+--------+----------+----------------------+-----------------+
++========+========+==========+======================+=================+
+| RRtype | Scheme | Mnemonic | Purpose              | Reference       |
++========+========+==========+======================+=================+
+| CDS    | 3      | SCANNER  | Scanner announcement | (this document) |
++--------+--------+----------+----------------------+-----------------+
+| CSYNC  | 3      | SCANNER  | Scanner announcement | (this document) |
++--------+--------+----------+----------------------+-----------------+
 ~~~
 
 --- back
