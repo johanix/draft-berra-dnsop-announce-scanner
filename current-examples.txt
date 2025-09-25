@@ -1,0 +1,12 @@
+Current thinking:
+
+_dsync.parent.		IN  DSYNC CDS NOTIFY    4711 notify-receiver.parent.
+_dsync.parent.		IN  DSYNC CDS SCANNER 4712 scanner-data.parent. 
+_dsync.parent.		IN  DSYNC CSYNC SCANNER 0 . ; there is no CSYNC scanner!
+_dsync.parent.		IN  DSYNC ANY UPDATE   4713 update-receiver.parent.
+
+; no extra info needed for the notify-receiver? let's make it similar to SCANNER
+notify-receiver.parent. IN  SVCB 0 . ( dsbootstrap="8078,9615,manual" )  
+scanner-data.parent.    IN  SVCB 0 . (
+			    dsbootstrap="8078,9615,manual" interval=86400 )  
+update-receiver.parent. IN  SVCB 0 . ( keybootstrap="at_apex,at_ns,manual" )
