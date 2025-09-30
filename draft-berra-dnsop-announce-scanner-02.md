@@ -47,8 +47,7 @@ scanners are typically implicit and undocumented, leading to
 inefficiencies and uncertainties. ￼
 
 This document proposes an extension to the semantics of the DSYNC
-resource record, as defined in
-draft-ietf-dnsop-generalized-notify, allowing parent zones to
+resource record, as defined in {{!RFC9859}}, allowing parent zones to
 explicitly signal the presence and scanning interval of such automated
 scanners. This enhancement aims to improve transparency and
 coordination between child and parent zones.
@@ -91,15 +90,13 @@ document are to be interpreted as described in {{!RFC2119}}.
 
 # DSYNC Record for Scanner Signaling
 
-The DSYNC resource record, as defined in
-{{?I-D.draft-ietf-dnsop-generalized-notify}}, facilitates the
+The DSYNC resource record, as defined in {{!RFC9859}}, facilitates the
 discovery of endpoints for generalized NOTIFY messages. This document
 proposes a new {scheme} for the DSYNC record that can be used to signal
 scanner presence (or absence) and periodicity. This new scheme (with a
 value=TBD) is represented by the mnemonic "SCANNER".
 
-The DSYNC record has the following format, as defined in
-{{?I-D.draft-ietf-dnsop-generalized-notify}}:
+The DSYNC record has the following format, as defined in {{!RFC9859}}:
 
 {owner} IN DSYNC {RRtype} {Scheme} {Port} {Target}
 
@@ -122,9 +119,8 @@ For scanner signaling, the fields are interpreted as follows:
 
 ## Signaling Scanner Presence
 
-To signal the presence of a scanner that check for CDS and CSYNC records
-once every 24 hours, a parent zone would publish the following DSYNC
-records:
+To signal the presence of a scanner that check for CDS and CSYNC records,
+a parent zone would publish the following DSYNC records:
 
 _dsync.parent.example. IN DSYNC CDS   SCANNER 0 scanner.parent.example.
 _dsync.parent.example. IN DSYNC CSYNC SCANNER 0 scanner.parent.example.
@@ -152,7 +148,7 @@ operate a scanner for CDS or CSYNC records.
 
 Parent zones can also use the wildcard and child-specific methods
 to signal the presence or absence of scanners as described in
-{{?I-D.draft-ietf-dnsop-generalized-notify}}.
+{{!RFC9859}}.
 
 For example, to indicate the existence of a CDS scanner and the absence of
 a CSYNC scanner:
@@ -175,7 +171,7 @@ This document defined two new SVCB keys: "bootstrap" and "interval".
 
 ### SVCB Key "bootstrap"
 
-The "dsbootstrap" key is used to signal what mechanisms are supported for
+The "bootstrap" key is used to signal what mechanisms are supported for
 upgrading an unsigned delegation to a signed delegation. Three mechanisms
 are currently identified:
 
@@ -196,7 +192,7 @@ are currently identified:
 The value of the "bootstrap" key is a string with one or more of the defined
 mechanisms, separated by ",". The mechanisms may occur in arbitrary order.
 
-New mechanisms are expected to be defined in the future. In partticular,
+New mechanisms are expected to be defined in the future. In particular,
 {{?I-D.draft-johani-dnsop-delegation-mgmt-via-ddns}} has a similar bootstrap
 need.
 
@@ -243,7 +239,7 @@ a fixed interval.
 
 # Modification To Child-Side DSYNC Lookup
 
-In {{?I-D.draft-ietf-dnsop-generalized-notify}} the semantics for looking
+In {{!RFC9859}} the semantics for looking
 up the DSYNC RRset are described. This document specifies how to publish
 additional information of use to the child operator. As this additional
 information is published at a different owner name (the target field of the
@@ -276,7 +272,7 @@ expectations and processes accordingly.
 # Security Considerations
 
 The proposed new "SCANNER" DSYNC scheme does not introduce new security
-vulnerabilities. As in {{?I-D.draft-ietf-dnsop-generalized-notify}}
+vulnerabilities. As in {{!RFC9859}}
 use of DNSSEC is RECOMMENDED but not required. Hence, a child service
 that looks up DSYNC RRsets in the parent zone may choose to ignore
 unsigned DSYNC RRsets.
