@@ -198,10 +198,11 @@ need.
 
 ### SVCB Key "interval"
 
-The "interval" key is used to signal the interval between successive runs of
-the scanner. The value is time, measured in seconds, between the start
-time of successive runs. I.e. the value is intended to provide a hint about the
-maximum wait time before a child-side change is detected by the scanner.
+The "interval" key is used to signal the interval between successive
+runs of the scanner. The value is time, measured in seconds, between
+the start time of successive runs. I.e. the value is intended to
+provide a hint about the maximum wait time before a child-side change
+is detected by the scanner.
 
 The value is only an indication of the expected scanner interval, not
 a commitment.  It is intended only for human consumption.
@@ -239,12 +240,12 @@ a fixed interval.
 
 # Modification To Child-Side DSYNC Lookup
 
-In {{!RFC9859}} the semantics for looking
-up the DSYNC RRset are described. This document specifies how to publish
-additional information of use to the child operator. As this additional
-information is published at a different owner name (the target field of the
-relevant DSYNC record) possibly three lookups will be needed to gather all
-information:
+In {{!RFC9859}} the semantics for looking up the DSYNC RRset are
+described. This document specifies how to publish additional
+information of use to the child operator. As this additional
+information is published at a different owner name (the target field
+of the relevant DSYNC record) possibly three lookups will be needed to
+gather all information:
 
 1. First query for "child._dsync.parent.example. DSYNC"
 
@@ -264,18 +265,18 @@ Publishing DSYNC records (typically for both CDS and CSYNC records)
 requires no coordination between parent and child zones. The parent
 zone operator should ensure that the "DSYNC SCANNER" and SVCB records
 accurately reflect their scanner operations (or absence of a scanner).
-If a Notify-Receiver exists then the corresponding "DSYNC NOTIFY" and 
+If a Notify-Receiver exists then the corresponding "DSYNC NOTIFY" and
 SVCB records correctly describe the operations of the Notify-Receiver.
 Child zone operators may use this information to adjust their
 expectations and processes accordingly.
 
 # Security Considerations
 
-The proposed new "SCANNER" DSYNC scheme does not introduce new security
-vulnerabilities. As in {{!RFC9859}}
-use of DNSSEC is RECOMMENDED but not required. Hence, a child service
-that looks up DSYNC RRsets in the parent zone may choose to ignore
-unsigned DSYNC RRsets.
+The proposed new "SCANNER" DSYNC scheme does not introduce new
+security vulnerabilities. As in {{!RFC9859}} use of DNSSEC is
+RECOMMENDED but not required. Hence, a child service that looks up
+DSYNC RRsets in the parent zone may choose to ignore unsigned DSYNC
+RRsets.
 
 # IANA Considerations
 
