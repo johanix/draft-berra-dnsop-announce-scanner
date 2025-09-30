@@ -1,7 +1,7 @@
 ---
 title: "Announce Existence of Parent CDS/CSYNC Scanner"
 abbrev: "Announce Parent DNS Scanner"
-docname: draft-berra-dnsop-announce-scanner-01
+docname: draft-berra-dnsop-announce-scanner-02
 date: {DATE}
 category: std
 
@@ -167,7 +167,7 @@ There are reasons for the parent to be able to publish additional details
 about the scanner service (if there is one). These details are published
 as values in an SVCB record located at the chosen target name.
 
-This document defined two new SVCB keys: "bootstrap" and "interval".
+This document defines two new SVCB keys: "bootstrap" and "interval".
 
 ### SVCB Key "bootstrap"
 
@@ -203,8 +203,8 @@ the scanner. The value is time, measured in seconds, between the start
 time of successive runs. I.e. the value is intended to provide a hint about the
 maximum wait time before a child-side change is detected by the scanner.
 
-The value is only an indication of the scanner interval, not a committment.
-It is intended only for human consumption.
+The value is only an indication of the expected scanner interval, not
+a commitment.  It is intended only for human consumption.
 
 ### Complete Example
 
