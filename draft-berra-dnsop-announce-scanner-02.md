@@ -1,7 +1,7 @@
 ---
 title: "Announce Existence of Parent CDS/CSYNC Scanner"
 abbrev: "Announce Parent DNS Scanner"
-docname: draft-berra-dnsop-announce-scanner-01
+docname: draft-berra-dnsop-announce-scanner-02
 date: {DATE}
 category: std
 
@@ -44,7 +44,7 @@ operator of a parent zone to detect the presence of specific records,
 such as CDS or CSYNC, in child zones, indicating a desire for
 delegation updates. However, the presence and periodicity of these
 scanners are typically implicit and undocumented, leading to
-inefficiencies and uncertainties. ￼
+inefficiencies and uncertainties.
 
 This document proposes an extension to the semantics of the DSYNC
 resource record, as defined in
@@ -69,7 +69,7 @@ information. For instance, the presence of CDS records in a child zone
 indicates a request to update DS records in the parent zone. However,
 the operation of these scanners is often opaque, with no standardized
 method for parent zones to signal their presence or scanning
-frequency. ￼
+frequency.
 
 The lack of explicit signaling can lead to inefficiencies, such as
 unnecessary scanning or delayed updates due to misaligned expectations
@@ -78,10 +78,10 @@ proposes an extension to the semantics of the DSYNC resource record,
 enabling parent zones to explicitly announce the presence and scanning
 interval of their automated scanners.
 
-As the DSYNC record becomes standard automated child-side systems
+As the DSYNC record becomes standard, automated child-side systems
 looking up the parent DSYNC records are expected. Given that a vast
-majority of parent zones do not operate scanners providing a simple
-mechaism to inform the child of this fact will be useful.
+majority of parent zones do not operate scanners, providing a simple
+mechanism to inform the child of this fact will be useful.
 
 # Requirements Terminology
 
@@ -122,9 +122,8 @@ For scanner signaling, the fields are interpreted as follows:
 
 ## Signaling Scanner Presence
 
-To signal the presence of a scanner that check for CDS and CSYNC records
-once every 24 hours, a parent zone would publish the following DSYNC
-records:
+To signal the presence of a scanner that scans for CDS and CSYNC records,
+a parent zone would publish the following DSYNC records:
 
 _dsync.parent.example. IN DSYNC CDS   SCANNER 0 scanner.parent.example.
 _dsync.parent.example. IN DSYNC CSYNC SCANNER 0 scanner.parent.example.
@@ -171,11 +170,11 @@ There are reasons for the parent to be able to publish additional details
 about the scanner service (if there is one). These details are published
 as values in an SVCB record located at the chosen target name.
 
-This document defined two new SVCB keys: "bootstrap" and "interval".
+This document defines two new SVCB keys: "bootstrap" and "interval".
 
 ### SVCB Key "bootstrap"
 
-The "dsbootstrap" key is used to signal what mechanisms are supported for
+The "bootstrap" key is used to signal what mechanisms are supported for
 upgrading an unsigned delegation to a signed delegation. Three mechanisms
 are currently identified:
 
@@ -196,7 +195,7 @@ are currently identified:
 The value of the "bootstrap" key is a string with one or more of the defined
 mechanisms, separated by ",". The mechanisms may occur in arbitrary order.
 
-New mechanisms are expected to be defined in the future. In partticular,
+New mechanisms are expected to be defined in the future. In particular,
 {{?I-D.draft-johani-dnsop-delegation-mgmt-via-ddns}} has a similar bootstrap
 need.
 
@@ -207,14 +206,14 @@ the scanner. The value is time, measured in seconds, between the start
 time of successive runs. I.e. the value is intended to provide a hint about the
 maximum wait time before a child-side change is detected by the scanner.
 
-The value is only an indication of the scanner interval, not a committment.
+The value is only an indication of the scanner interval, not a commitment.
 It is intended only for human consumption.
 
 ### Complete Example
 
 Example for a parent that does operate a CDS scanner but not a CSYNC scanner:
 
-_dsync.parent.example.   IN  DSYNC CDS   SCANNER 5399 scanner.parent.example.
+_dsync.parent.example.   IN  DSYNC CDS   SCANNER 0 scanner.parent.example.
 _dsync.parent.example.   IN  DSYNC CSYNC SCANNER 0 .
 
 scanner.parent.example.  IN  SVCB 0 . (
