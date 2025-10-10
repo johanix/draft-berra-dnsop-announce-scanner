@@ -44,7 +44,7 @@ operator of a parent zone to detect the presence of specific records,
 such as CDS or CSYNC, in child zones, indicating a desire for
 delegation updates. However, the presence and periodicity of these
 scanners are typically implicit and undocumented, leading to
-inefficiencies and uncertainties. ￼
+inefficiencies and uncertainties.
 
 This document proposes an extension to the semantics of the DSYNC
 resource record, as defined in {{!RFC9859}}, allowing parent zones to
@@ -68,7 +68,7 @@ information. For instance, the presence of CDS records in a child zone
 indicates a request to update DS records in the parent zone. However,
 the operation of these scanners is often opaque, with no standardized
 method for parent zones to signal their presence or scanning
-frequency. ￼
+frequency.
 
 The lack of explicit signaling can lead to inefficiencies, such as
 unnecessary scanning or delayed updates due to misaligned expectations
@@ -77,10 +77,10 @@ proposes an extension to the semantics of the DSYNC resource record,
 enabling parent zones to explicitly announce the presence and scanning
 interval of their automated scanners.
 
-As the DSYNC record becomes standard automated child-side systems
+As the DSYNC record becomes standard, automated child-side systems
 looking up the parent DSYNC records are expected. Given that a vast
-majority of parent zones do not operate scanners providing a simple
-mechaism to inform the child of this fact will be useful.
+majority of parent zones do not operate scanners, providing a simple
+mechanism to inform the child of this fact will be useful.
 
 # Requirements Terminology
 
@@ -207,11 +207,12 @@ is detected by the scanner.
 The value is only an indication of the expected scanner interval, not
 a commitment.  It is intended only for human consumption.
 
+
 ### Complete Example
 
 Example for a parent that does operate a CDS scanner but not a CSYNC scanner:
 
-_dsync.parent.example.   IN  DSYNC CDS   SCANNER 5399 scanner.parent.example.
+_dsync.parent.example.   IN  DSYNC CDS   SCANNER 0 scanner.parent.example.
 _dsync.parent.example.   IN  DSYNC CSYNC SCANNER 0 .
 
 scanner.parent.example.  IN  SVCB 0 . (
