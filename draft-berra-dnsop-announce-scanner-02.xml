@@ -63,8 +63,7 @@ scanners are typically implicit and undocumented, leading to
 inefficiencies and uncertainties. ￼</t>
 
 <t>This document proposes an extension to the semantics of the DSYNC
-resource record, as defined in
-draft-ietf-dnsop-generalized-notify, allowing parent zones to
+resource record, as defined in <xref target="RFC9859"/>, allowing parent zones to
 explicitly signal the presence and scanning interval of such automated
 scanners. This enhancement aims to improve transparency and
 coordination between child and parent zones.</t>
@@ -86,7 +85,7 @@ requests.</t>
   <middle>
 
 
-<?line 62?>
+<?line 61?>
 
 <section anchor="introduction"><name>Introduction</name>
 
@@ -120,15 +119,13 @@ document are to be interpreted as described in <xref target="RFC2119"/>.</t>
 </section>
 <section anchor="dsync-record-for-scanner-signaling"><name>DSYNC Record for Scanner Signaling</name>
 
-<t>The DSYNC resource record, as defined in
-<xref target="I-D.draft-ietf-dnsop-generalized-notify"/>, facilitates the
+<t>The DSYNC resource record, as defined in <xref target="RFC9859"/>, facilitates the
 discovery of endpoints for generalized NOTIFY messages. This document
 proposes a new {scheme} for the DSYNC record that can be used to signal
 scanner presence (or absence) and periodicity. This new scheme (with a
 value=TBD) is represented by the mnemonic "SCANNER".</t>
 
-<t>The DSYNC record has the following format, as defined in
-<xref target="I-D.draft-ietf-dnsop-generalized-notify"/>:</t>
+<t>The DSYNC record has the following format, as defined in <xref target="RFC9859"/>:</t>
 
 <t>{owner} IN DSYNC {RRtype} {Scheme} {Port} {Target}</t>
 
@@ -149,9 +146,8 @@ SHOULD be interpreted as the absence of a scanner.</t>
 
 <section anchor="signaling-scanner-presence"><name>Signaling Scanner Presence</name>
 
-<t>To signal the presence of a scanner that check for CDS and CSYNC records
-once every 24 hours, a parent zone would publish the following DSYNC
-records:</t>
+<t>To signal the presence of a scanner that check for CDS and CSYNC records,
+a parent zone would publish the following DSYNC records:</t>
 
 <t>_dsync.parent.example. IN DSYNC CDS   SCANNER 0 scanner.parent.example.
 _dsync.parent.example. IN DSYNC CSYNC SCANNER 0 scanner.parent.example.</t>
@@ -181,7 +177,7 @@ operate a scanner for CDS or CSYNC records.</t>
 
 <t>Parent zones can also use the wildcard and child-specific methods
 to signal the presence or absence of scanners as described in
-<xref target="I-D.draft-ietf-dnsop-generalized-notify"/>.</t>
+<xref target="RFC9859"/>.</t>
 
 <t>For example, to indicate the existence of a CDS scanner and the absence of
 a CSYNC scanner:</t>
@@ -205,7 +201,7 @@ as values in an SVCB record located at the chosen target name.</t>
 
 <section anchor="svcb-key-bootstrap"><name>SVCB Key "bootstrap"</name>
 
-<t>The "dsbootstrap" key is used to signal what mechanisms are supported for
+<t>The "bootstrap" key is used to signal what mechanisms are supported for
 upgrading an unsigned delegation to a signed delegation. Three mechanisms
 are currently identified:</t>
 
@@ -226,7 +222,7 @@ are currently identified:</t>
 <t>The value of the "bootstrap" key is a string with one or more of the defined
 mechanisms, separated by ",". The mechanisms may occur in arbitrary order.</t>
 
-<t>New mechanisms are expected to be defined in the future. In partticular,
+<t>New mechanisms are expected to be defined in the future. In particular,
 <xref target="I-D.draft-johani-dnsop-delegation-mgmt-via-ddns"/> has a similar bootstrap
 need.</t>
 
@@ -279,7 +275,7 @@ a fixed interval.</t>
 </section>
 <section anchor="modification-to-child-side-dsync-lookup"><name>Modification To Child-Side DSYNC Lookup</name>
 
-<t>In <xref target="I-D.draft-ietf-dnsop-generalized-notify"/> the semantics for looking
+<t>In <xref target="RFC9859"/> the semantics for looking
 up the DSYNC RRset are described. This document specifies how to publish
 additional information of use to the child operator. As this additional
 information is published at a different owner name (the target field of the
@@ -314,7 +310,7 @@ expectations and processes accordingly.</t>
 <section anchor="security-considerations"><name>Security Considerations</name>
 
 <t>The proposed new "SCANNER" DSYNC scheme does not introduce new security
-vulnerabilities. As in <xref target="I-D.draft-ietf-dnsop-generalized-notify"/>
+vulnerabilities. As in <xref target="RFC9859"/>
 use of DNSSEC is RECOMMENDED but not required. Hence, a child service
 that looks up DSYNC RRsets in the parent zone may choose to ignore
 unsigned DSYNC RRsets.</t>
@@ -367,6 +363,21 @@ Keys (SvcParamKeys)" registry.</t>
 
 
 
+<reference anchor="RFC9859">
+  <front>
+    <title>Generalized DNS Notifications</title>
+    <author fullname="J. Stenstam" initials="J." surname="Stenstam"/>
+    <author fullname="P. Thomassen" initials="P." surname="Thomassen"/>
+    <author fullname="J. Levine" initials="J." surname="Levine"/>
+    <date month="September" year="2025"/>
+    <abstract>
+      <t>This document generalizes and extends the use of DNS NOTIFY (RFC 1996) beyond conventional zone transfer hints to allow other types of actions that were previously lacking a trigger mechanism to be triggered via the DNS. Notifications merely nudge the receiver to initiate a predefined action promptly (instead of on a schedule); they do not alter the action itself (including any security checks it might employ).</t>
+      <t>To enable this functionality, a method for discovering the receiver endpoint for such notification messages is introduced, via the new DSYNC record type. Notification types are recorded in a new registry, with initial support for parental NS and DS record updates including DNSSEC bootstrapping.</t>
+    </abstract>
+  </front>
+  <seriesInfo name="RFC" value="9859"/>
+  <seriesInfo name="DOI" value="10.17487/RFC9859"/>
+</reference>
 <reference anchor="RFC2119">
   <front>
     <title>Key words for use in RFCs to Indicate Requirement Levels</title>
@@ -389,48 +400,6 @@ Keys (SvcParamKeys)" registry.</t>
 
 
 
-
-<reference anchor="I-D.draft-ietf-dnsop-generalized-notify">
-   <front>
-      <title>Generalized DNS Notifications</title>
-      <author fullname="Johan Stenstam" initials="J." surname="Stenstam">
-         <organization>The Swedish Internet Foundation</organization>
-      </author>
-      <author fullname="Peter Thomassen" initials="P." surname="Thomassen">
-         <organization>deSEC, Secure Systems Engineering</organization>
-      </author>
-      <author fullname="John R. Levine" initials="J. R." surname="Levine">
-         <organization>Standcore LLC</organization>
-      </author>
-      <date day="19" month="March" year="2025"/>
-      <abstract>
-	 <t>   This document generalizes and extends the use of DNS NOTIFY (RFC
-   1996) beyond conventional zone transfer hints, to allow triggering
-   other types of actions via the DNS that were previously lacking a
-   trigger mechanism.  Notifications merely nudge the receiver to
-   initiate a predefined action promptly (instead of on a schedule);
-   they do not alter the action itself (including any security checks it
-   might employ).
-
-   To enable this functionality, a method for discovering the receiver
-   endpoint for such notification messages is introduced, via the new
-   DSYNC record type.  Notification types are recorded in a new
-   registry, with initial support for parental NS and DS record updates
-   including DNSSEC bootstrapping.
-
-   TO BE REMOVED: This document is being collaborated on in Github at:
-   https://github.com/peterthomassen/draft-ietf-dnsop-generalized-notify
-   (https://github.com/peterthomassen/draft-ietf-dnsop-generalized-
-   notify).  The most recent working version of the document, open
-   issues, etc. should all be available there.  The authors (gratefully)
-   accept pull requests.
-
-	 </t>
-      </abstract>
-   </front>
-   <seriesInfo name="Internet-Draft" value="draft-ietf-dnsop-generalized-notify-09"/>
-   
-</reference>
 
 <reference anchor="I-D.draft-johani-dnsop-delegation-mgmt-via-ddns">
    <front>
@@ -483,7 +452,7 @@ Keys (SvcParamKeys)" registry.</t>
 </references>
 
 
-<?line 317?>
+<?line 313?>
 
 <section anchor="change-history-to-be-removed-before-publication"><name>Change History (to be removed before publication)</name>
 
@@ -520,107 +489,106 @@ Move scanner interval signaling from DSYNC port field to new SVCB key.</t>
   </back>
 
 <!-- ##markdown-source:
-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
+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
 
 -->
 
