@@ -124,8 +124,8 @@ For scanner signaling, the fields are interpreted as follows:
 To signal the presence of a scanner that check for CDS and CSYNC records,
 a parent zone would publish the following DSYNC records:
 
-_dsync.parent.example. IN DSYNC CDS   SCANNER 0 scanner.parent.example.
-_dsync.parent.example. IN DSYNC CSYNC SCANNER 0 scanner.parent.example.
+    _dsync.parent.example. IN DSYNC CDS   SCANNER 0 scanner.parent.example.
+    _dsync.parent.example. IN DSYNC CSYNC SCANNER 0 scanner.parent.example.
 
 The presence of these records informs the child operator that the parent
 zone operates a scanner for both CDS and CSYNC records and that any
@@ -140,8 +140,8 @@ target name is only a domain name used for publication of scanner details.
 To explicitly signal the absence of a scanner, the parent would
 set the "target" field to ".".
 
-_dsync.parent.example. IN DSYNC CDS   SCANNER 0 .
-_dsync.parent.example. IN DSYNC CSYNC SCANNER 0 .
+    _dsync.parent.example. IN DSYNC CDS   SCANNER 0 .
+    _dsync.parent.example. IN DSYNC CSYNC SCANNER 0 .
 
 The presence of these records indicate that the parent zone does not
 operate a scanner for CDS or CSYNC records.
@@ -155,13 +155,13 @@ to signal the presence or absence of scanners as described in
 For example, to indicate the existence of a CDS scanner and the absence of
 a CSYNC scanner:
 
-*._dsync.parent.example. IN DSYNC CDS   SCANNER 0 scanner.parent.example.
-*._dsync.parent.example. IN DSYNC CSYNC SCANNER 0 .
+    *._dsync.parent.example. IN DSYNC CDS   SCANNER 0 scanner.parent.example.
+    *._dsync.parent.example. IN DSYNC CSYNC SCANNER 0 .
 
 or
 
-child._dsync.parent.example. IN DSYNC CDS   SCANNER 0 scanner.parent.example.
-child._dsync.parent.example. IN DSYNC CSYNC SCANNER 0 .
+    child._dsync.parent.example. IN DSYNC CDS   SCANNER 0 scanner.parent.example.
+    child._dsync.parent.example. IN DSYNC CSYNC SCANNER 0 .
 
 ## Publishing Additional Scanner Details
 
@@ -214,10 +214,10 @@ a commitment.  It is intended only for human consumption.
 
 Example for a parent that does operate a CDS scanner but not a CSYNC scanner:
 
-_dsync.parent.example.   IN  DSYNC CDS   SCANNER 0 scanner.parent.example.
-_dsync.parent.example.   IN  DSYNC CSYNC SCANNER 0 .
+    _dsync.parent.example.   IN  DSYNC CDS   SCANNER 0 scanner.parent.example.
+    _dsync.parent.example.   IN  DSYNC CSYNC SCANNER 0 .
 
-scanner.parent.example.  IN  SVCB 0 . (
+    scanner.parent.example.  IN  SVCB 0 . (
                          bootstrap="rfc8078,rfc9615,manual" interval=86400 )  
 
 ## Publishing Additional Notify-Receiver Details
@@ -232,9 +232,9 @@ The mechanism for this publication is identical to the mechanism for the
 scanner details. I.e. it is published as a new key value in an SVCB record
 located at the DSYNC NOTIFY target:
 
-_dsync.parent.example.  IN  DSYNC CDS   NOTIFY 4711 notify-receiver.parent.example.
-_dsync.parent.example.  IN  DSYNC CSYNC NOTIFY 4712 notify-receiver.parent.example.
-notify-receiver.parent.example. IN  SVCB 0 . ( 
+    _dsync.parent.example.  IN  DSYNC CDS   NOTIFY 4711 notify-receiver.parent.example.
+    _dsync.parent.example.  IN  DSYNC CSYNC NOTIFY 4712 notify-receiver.parent.example.
+    notify-receiver.parent.example. IN  SVCB 0 . ( 
                                 bootstrap="rfc8078,rfc9615,manual" )
 
 Note that the SVCB key "interval" is not applicable to the notify-receiver,
